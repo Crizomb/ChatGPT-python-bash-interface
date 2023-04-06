@@ -52,7 +52,7 @@ def main():
         time.sleep(1)
 
 
-        if (j+10)%24 == 0:
+        if (j+1)%24 == 0:
             #wait 3 hours GPT-4 is limited to 25 requests per 3 hours
             time.sleep(60*60*3)
 
