@@ -54,4 +54,5 @@ def test2():
     result = run_code(code_str1, create_namespace())
     print(result)
 
-test2()
+if __name__ == "__main__":
+    test2()
