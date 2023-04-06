@@ -13,6 +13,7 @@ from formating_tools import isolate_code_bloc
 
 
 def better_send_keys(element, text):
+    """Act like send_keys but doesn't press enter when typing '\n'"""
     lines = text.split("\n")
     for i, line in enumerate(lines):
         element.send_keys(line)
@@ -49,14 +50,14 @@ class GPTDriver:
                 continue
 
     def create_user_data_dir(self, data_dir="selenium1"):
-        """Create a user data dir for selenium"""
+        """Create a user data dir for selenium. Run this method then connect with your account to the chatgpt website and wait to create cookies etc..."""
         chrome_options = Options()
         chrome_options.add_argument(f"user-data-dir={data_dir}")
         chrome_options.add_argument("--disable-images")
         self.driver = Chrome(options=chrome_options)
         self.driver.set_window_size(600, 1000)
         self.driver.get("https://chat.openai.com/chat")
-        time.sleep(10)
+        time.sleep(60)
         self.driver.quit()
 
     def connect(self):
@@ -76,6 +77,7 @@ class GPTDriver:
         return chat
 
     def send_inputs(self, txt):
+        """Send a message to chatgpt"""
         textarea = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div[2]/main/div[2]/form/div/div[2]/textarea')
         better_send_keys(textarea, txt)
         time.sleep(1)
@@ -83,6 +85,7 @@ class GPTDriver:
         button_send.click()
 
     def send_get_code(self, prompt):
+        """Send prompt to chatgpt, then wait for the response, then get code blocs inside the response then return the code blocs contents"""
         print("send_inputs")
         self.send_inputs(prompt)
         time.sleep(2)
