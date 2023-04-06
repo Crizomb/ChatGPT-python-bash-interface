@@ -8,6 +8,7 @@ def remove_trailing_newline(s):
     if s.endswith('\n'):
         return s[:-1]
     return s
+
 def isolate_code_bloc(soup):
     pre_tab = soup.find_all("pre")
     code_bloc = []
