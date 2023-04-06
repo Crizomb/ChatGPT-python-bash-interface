@@ -10,6 +10,7 @@ def remove_trailing_newline(s):
     return s
 
 def isolate_code_bloc(soup):
+    """Get codes bloc from the raw html of chatgpt website return a CodeBloc"""
     pre_tab = soup.find_all("pre")
     code_bloc = []
     for code in pre_tab:
