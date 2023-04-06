@@ -11,18 +11,15 @@ from exec_python_code import create_namespace, run_code
 from exec_term_code import run_shell_command
 from formating_tools import isolate_code_bloc
 
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 def better_send_keys(element, text):
-    # Like send keys but doesn't press enter when viewing '\n' 
     lines = text.split("\n")
     for i, line in enumerate(lines):
         element.send_keys(line)
         if i != len(lines)-1:
             element.send_keys(Keys.SHIFT + Keys.ENTER)
 
-class Driver:
+class GPTDriver:
     def __init__(self, headless=False, data_dir="selenium1"):
         time.sleep(1)
         chrome_options = Options()
@@ -34,10 +31,11 @@ class Driver:
         chrome_options.add_argument(f"user-data-dir={data_dir}")
 
         self.driver = Chrome(options=chrome_options, use_subprocess=True)
+        #full screen
         self.driver.maximize_window()
 
     def bad_wait_until(self, by, value):
-        """Wait for chatgpt answer"""
+        """Wait until the element is found"""
         while True:
             try:
                 element = self.driver.find_element(by, value)
@@ -86,77 +84,21 @@ class Driver:
 
     def send_get_code(self, prompt):
         print("send_inputs")
-        driver.send_inputs(prompt)
+        self.send_inputs(prompt)
         time.sleep(2)
-        
-        #wait until the chat is updated and the button "regenerate answer" is shown
+        #wait until the chat is updated and button is shown
+
         xpath = """//*[@id="__next"]/div[2]/div[2]/main/div[2]/form/div/div[1]/button/div"""
+
         self.bad_wait_until(By.XPATH, xpath)
 
         print("get_chat")
-        chat = driver.get_last_chat()
+        chat = self.get_last_chat()
         isolated_code = isolate_code_bloc(chat)
         if isolated_code:
-            return isolated_code[-1]
+            return isolated_code
         else:
             return None
 
     def close(self):
         self.driver.close()
-
-driver = Driver()
-
-
-
-
-
-
-def main():
-    driver.connect()
-    time.sleep(5)
-
-    first_prompt = "You now have access to a windows computer. " \
-                   "Your goal is to gather as much information about the current event inn the outside world, and to gain new capacities. " \
-                   "Your only interaction with the outside world you can have is by executing python code or window shell code " \
-                    "to run something you have to create a code bloc with a shell command xor python code\
-                    The only thing I will send you from now on, is the  output of the LAST CODE BLOC you wrote "\
-                    "So form now on, I will ONLY send you the output of your last shell bloc commands you wrote, don't ask me anything else, and YOU will give me some code to execute"\
-                    "You can do anything you want, including downloading things if neccesary"\
-                    "Your responses should always contain a small todolist, the message 'I must gather information this pc and obtain new capacities only using shell and python. I have to do those things myself without help and I can't ask for any handmade code modification. I'm alone'"\
-
-
-
-    code = driver.send_get_code(first_prompt)
-    if not code:
-        driver.sent_get_code("I must gather information this pc and obtain new capacities only using a shell interface. Give code to execute")
-    time.sleep(1)
-    if  'python' in code.language.lower():
-        answer = run_code(code.code, create_namespace())
-    else:
-        answer = run_shell_command(code.code)
-    time.sleep(1)
-
-    for j in range(100):
-        print(f"ITERATION {j}")
-        code = driver.send_get_code(answer)
-        time.sleep(1)
-        if not code:
-            driver.sent_get_code("I must gather information this pc and obtain new capacities only using python or shell. Give code to execute")
-        if 'python' in code.language.lower():
-            answer = run_code(code.code, create_namespace())
-        else:
-            answer = run_shell_command(code.code)
-        time.sleep(1)
-        
-        if (j+1)%24 == 0:
-            #If using gpt4 wait for 3 hours after 25 msg
-            print("Waiting 3 hours")
-            time.sleep(60*60*3)
-            
-    driver.close()
-
-
-if __name__ == "__main__":
-    main()
-
-
