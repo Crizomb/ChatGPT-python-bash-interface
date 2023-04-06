@@ -15,6 +15,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 def better_send_keys(element, text):
+    # Like send keys but doesn't press enter when viewing '\n' 
     lines = text.split("\n")
     for i, line in enumerate(lines):
         element.send_keys(line)
@@ -33,11 +34,10 @@ class Driver:
         chrome_options.add_argument(f"user-data-dir={data_dir}")
 
         self.driver = Chrome(options=chrome_options, use_subprocess=True)
-        #full screen
         self.driver.maximize_window()
 
     def bad_wait_until(self, by, value):
-        """Wait until the element is found"""
+        """Wait for chatgpt answer"""
         while True:
             try:
                 element = self.driver.find_element(by, value)
@@ -88,10 +88,9 @@ class Driver:
         print("send_inputs")
         driver.send_inputs(prompt)
         time.sleep(2)
-        #wait until the chat is updated and button is shown
-
+        
+        #wait until the chat is updated and the button "regenerate answer" is shown
         xpath = """//*[@id="__next"]/div[2]/div[2]/main/div[2]/form/div/div[1]/button/div"""
-
         self.bad_wait_until(By.XPATH, xpath)
 
         print("get_chat")
@@ -148,11 +147,13 @@ def main():
         else:
             answer = run_shell_command(code.code)
         time.sleep(1)
-
-        if (j+14)%24 == 0:
+        
+        if (j+1)%24 == 0:
+            #If using gpt4 wait for 3 hours after 25 msg
+            print("Waiting 3 hours")
             time.sleep(60*60*3)
-            print("HEY WAKE UP BIATCH")
-            time.sleep(60*5)
+            
+    driver.close()
 
 
 if __name__ == "__main__":
