@@ -2,6 +2,7 @@ import sys
 import importlib.util
 import io
 import contextlib
+import traceback
 
 def create_namespace():
     module_name = "__main__"
@@ -12,8 +13,6 @@ def create_namespace():
 
 def run_code(code_str, namespace):
     # redirect stdout to a buffer to capture output
-    if "import os" in code_str:
-        return "Error: import os is not allowed. use direct shell command instead."
     buffer = io.StringIO()
     with contextlib.redirect_stdout(buffer):
         try:
@@ -25,16 +24,14 @@ def run_code(code_str, namespace):
         except Exception as e:
             # print any errors to the buffer
             print(f"Error: {e}", file=buffer)
+            traceback.print_exc(file=buffer)
 
     # return the captured output or error message as a string
     result = buffer.getvalue().strip()
     if result:
         return result
     else:
-        return "No output, maybe an error? maybe not."
-
-
-
+        return "---\nProcess finished with no output\n---"
 
 def test():
     code_str1 = '''import numpy as np\nimport matplotlib.pyplot as plt'''
