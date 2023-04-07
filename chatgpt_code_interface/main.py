@@ -91,6 +91,10 @@ def main(launch_first_prompt=False, first_prompt=None):
         if (j + 5) % 24 == 0:
             # Wait 3 hours. GPT-4 is limited to 25 requests per 3 hours
             time.sleep(60 * 60 * 3)
+           
+ 
+def create_user_data():
+    GPTDriver.create_user_data_dir()
 
 if __name__ == "__main__":
     main()
