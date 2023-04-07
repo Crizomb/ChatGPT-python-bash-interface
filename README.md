@@ -1,7 +1,7 @@
 # ChatGPT-python-bash-interface
 You don't need an API key, this simple project use selenium to communicate beetwen chatgpt website and your pc.
 install all libs in requierements.txt.
-This code work on window11. On linux only "exec_term_code" doesn't work well. 
+This code work on window11. On linux only "exec_term_code" (which is the script that run terminal commands) doesn't work well. 
 When using the code for the first time, go to main change last line by:
 
 if __name__ == "__main__":
