@@ -1,0 +1,6 @@
+selenium==4.8.3
+urllib3==1.26.6
+matplotlib==3.5.3
+undetected-chromedriver==3.4.6
+beautifulsoup4==4.12.0
+

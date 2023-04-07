@@ -1,0 +1,54 @@
+import sys
+import importlib.util
+import io
+import contextlib
+import traceback
+
+def create_namespace():
+    module_name = "__main__"
+    module_spec = importlib.util.spec_from_loader(module_name, loader=None)
+    module = importlib.util.module_from_spec(module_spec)
+    sys.modules[module_name] = module
+    return module.__dict__
+
+def run_code(code_str, namespace):
+    # redirect stdout to a buffer to capture output
+    buffer = io.StringIO()
+    with contextlib.redirect_stdout(buffer):
+        try:
+            # compile the code
+            code = compile(code_str, "<string>", "exec")
+
+            # execute the code in the given namespace
+            exec(code, namespace)
+        except Exception as e:
+            # print any errors to the buffer
+            print(f"Error: {e}", file=buffer)
+            traceback.print_exc(file=buffer)
+
+    # return the captured output or error message as a string
+    result = buffer.getvalue().strip()
+    if result:
+        return result
+    else:
+        return "---\nProcess finished with no output\n---"
+
+
+
+def test():
+    code_str1 = '''import numpy as np\nimport matplotlib.pyplot as plt'''
+    code_str2 = '''x = np.linspace(0, 10, 100)\ny = np.sin(x)\nplt.plot(x, y)\nplt.show()'''
+
+
+    namespace = create_namespace()
+    result1 = run_code(code_str1, namespace)
+    result2 = run_code(code_str2, namespace)
+
+def test2():
+    code_str1 = '''import os'''
+
+    result = run_code(code_str1, create_namespace())
+    print(result)
+
+if __name__ == '__main__':
+    test()
