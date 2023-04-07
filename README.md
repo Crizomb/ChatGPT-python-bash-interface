@@ -7,5 +7,5 @@ When using the code for the first time, go to main change last line by:
 if __name__ == "__main__":
     gpt_driver.create_user_data()
 
-run the code, connect to chatgpt and then wait 60s the code to stop. then change back the code and run again.
+run main.py, connect to chatgpt and then wait 60s the code to stop. then change back the code and run again.
 You can chose manually GPT4 before the first prompt got sent.
