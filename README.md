@@ -2,10 +2,6 @@
 You don't need an API key, this simple project use selenium to communicate beetwen chatgpt website and your pc.
 install all libs in requierements.txt.
 This code work on window11. On linux only "exec_term_code" (which is the script that run terminal commands) doesn't work well. 
-When using the code for the first time, go to main change last line by:
-
-if __name__ == "__main__":
-    create_user_data()
 
 run main.py, connect to chatgpt and then wait 60s the code to stop. then change back the code and run again.
 
