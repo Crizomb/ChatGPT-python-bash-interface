@@ -3,7 +3,7 @@ You don't need an API key, this simple project use selenium to communicate beetw
 install all libs in requierements.txt.
 This code work well on window11 and on Ubuntu.
 
-run main.py, connect to chatgpt and then wait 60s the code to stop. then change back the code and run again.
+run main.py, to launch.
 
 
 https://user-images.githubusercontent.com/62544756/230621413-0b3dad7a-7d64-423d-b510-a95435ec9d37.mp4
