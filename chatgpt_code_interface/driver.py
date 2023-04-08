@@ -108,28 +108,6 @@ class GPTDriver:
             });
         """)
 
-    def add_send_result_button(self):
-        #html of a big red button with border-radius of 10%, green background and white text pady by 10px up and padx by 10px left
-        button_html = '<button id="sendResultButton" style="position: fixed; bottom: 10px; right: 10px; font-size: 2em; background-color: green; color: white; border-radius: 10%;">Send result</button>'
-        xpath = """//*[@id="__next"]/div[2]/div[2]/main/div[2]/div/span"""
-
-        # Find the element using the given XPath
-        element = None
-        while not element:
-            try:
-                element = self.driver.find_element(By.XPATH, xpath)
-            except:
-                time.sleep(0.1)
-
-        # Inject the button after the element found using the XPath
-        self.driver.execute_script(f"arguments[0].insertAdjacentHTML('afterend', '{button_html}');", element)
-
-        # Add the click event listener for the button
-        self.driver.execute_script("""
-            document.getElementById('sendResultButton').addEventListener('click', function() {
-                window.loopControl2 = 'send_result';
-            });
-        """)
 
     def close(self):
         self.driver.close()
