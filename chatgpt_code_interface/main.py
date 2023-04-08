@@ -44,7 +44,8 @@ def main(launch_first_prompt=False, first_prompt=None):
         print(f"ITERATION {j}")
 
 
-        gpt_driver.send_message(answer)
+        gpt_driver.write_message(answer)
+        #gpt_driver.send_message()
         gpt_driver.wait_answer()
 
         wait_continue_button_click()
@@ -63,4 +64,3 @@ def create_user_data():
 
 if __name__ == "__main__":
     main()
-
