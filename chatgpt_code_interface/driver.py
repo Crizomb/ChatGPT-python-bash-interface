@@ -78,16 +78,17 @@ class GPTDriver:
         chat = soup.find_all("div", class_="""group w-full text-gray-800 dark:text-gray-100 border-b border-black/10 dark:border-gray-900/50 bg-gray-50 dark:bg-[#444654]""")[-1]
         return chat
 
-    def send_message(self, txt):
+    def write_message(self, txt):
         textarea = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div[2]/main/div[2]/form/div/div[2]/textarea')
         better_send_keys(textarea, txt)
-        time.sleep(1)
+    
+    def send_message(self):
         button_send = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div[2]/div[2]/main/div[2]/form/div/div[2]/button')
         button_send.click()
 
     def add_run_button(self):
         #html of a big red button with border-radius of 10%, green background and white text pady by 10px up and padx by 10px left
-        button_html = '<button id="continueButton" style="position: fixed; bottom: 10px; right: 10px; font-size: 2em; background-color: green; color: white; border-radius: 10%;">Continue</button>'
+        button_html = '<button id="continueButton" style="position: fixed; bottom: 10px; right: 10px; font-size: 2em; background-color: green; color: white; border-radius: 10%;">Run code</button>'
         xpath = """//*[@id="__next"]/div[2]/div[2]/main/div[2]/div/span"""
 
         # Find the element using the given XPath
